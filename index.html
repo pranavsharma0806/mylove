@@ -1,76 +1,166 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Will You Be My Valentine?</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: url("https://source.unsplash.com/2N--x8dSkVQ/1600x900") no-repeat center center fixed;
-            background-size: cover;
-            text-align: center;
-            color: white;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Will You Be My Valentine?</title>
 
-        h1 {
-            font-size: 3em;
-            text-shadow: 2px 2px 8px #000;
-        }
+<style>
+    * {
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+    }
 
-        .btn {
-            padding: 15px 30px;
-            font-size: 24px;
-            margin: 15px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: 0.3s ease;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-        }
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #ff758c, #ff7eb3);
+        color: white;
+        min-height: 100vh;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        position: relative;
+    }
 
-        #yes-btn {
-            background: #ff5c8d;
-            color: white;
-        }
+    h1 {
+        font-size: clamp(2rem, 5vw, 3rem);
+        text-shadow: 2px 2px 8px rgba(0,0,0,0.4);
+        z-index: 2;
+    }
 
-        #no-btn {
-            position: absolute;
-            background: #ff3b3b;
-            color: white;
-        }
+    .btn {
+        padding: 14px 28px;
+        font-size: 1.3rem;
+        margin: 12px;
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+        box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+        z-index: 2;
+    }
 
-        #yes-btn:hover {
-            transform: scale(1.1);
-        }
+    #yes-btn {
+        background: #ff4f8b;
+        color: white;
+    }
 
-    </style>
+    #no-btn {
+        background: #ff2f2f;
+        color: white;
+    }
+
+    .btn:active {
+        transform: scale(0.95);
+    }
+
+    /* ❤️ Floating hearts background */
+    .heart {
+        position: absolute;
+        bottom: -40px;
+        color: rgba(255,255,255,0.7);
+        font-size: 20px;
+        animation: floatUp 8s linear infinite;
+        pointer-events: none;
+    }
+
+    @keyframes floatUp {
+        from {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+        to {
+            transform: translateY(-110vh) scale(1.6);
+            opacity: 0;
+        }
+    }
+
+    /* 📸 Modal popup */
+    .modal {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.7);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 10;
+        padding: 20px;
+    }
+
+    .modal img {
+        width: 100%;
+        max-width: 420px;
+        border-radius: 16px;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+        animation: popIn 0.35s ease;
+    }
+
+    @keyframes popIn {
+        from {
+            transform: scale(0.8);
+            opacity: 0;
+        }
+        to {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+</style>
 </head>
+
 <body>
-    <h1>💖 Will You Be My Valentine? 💖</h1>
-    <button class="btn" id="yes-btn">Yes</button>
-    <button class="btn" id="no-btn">No</button>
 
-    <script>
-        const noBtn = document.getElementById('no-btn');
-        const yesBtn = document.getElementById('yes-btn');
+<h1>💖 Will You Be My Valentine? 💖</h1>
 
-        noBtn.addEventListener('mouseover', () => {
-            const newX = Math.random() * (window.innerWidth - 120);
-            const newY = Math.random() * (window.innerHeight - 80);
-            noBtn.style.left = newX + 'px';
-            noBtn.style.top = newY + 'px';
-        });
+<button class="btn" id="yes-btn">Yes</button>
+<button class="btn" id="no-btn">No</button>
 
-        yesBtn.addEventListener('click', () => {
-            document.body.innerHTML = '<h1>🎉 Yay! You said Yes! ❤️</h1>';
-        });
-    </script>
+<!-- 📸 Image Modal -->
+<div class="modal" id="imageModal">
+    <img src="valentine.jpg" alt="Our Valentine">
+</div>
+
+<script>
+    const yesBtn = document.getElementById('yes-btn');
+    const noBtn = document.getElementById('no-btn');
+    const modal = document.getElementById('imageModal');
+
+    // YES click
+    yesBtn.addEventListener('click', () => {
+        document.body.innerHTML = '<h1>🎉 Yay! You said YES! ❤️</h1>';
+    });
+
+    // NO click → show image popup
+    noBtn.addEventListener('click', () => {
+        modal.style.display = 'flex';
+    });
+
+    // Close modal on tap
+    modal.addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
+
+    // ❤️ Create floating hearts
+    function createHeart() {
+        const heart = document.createElement('div');
+        heart.classList.add('heart');
+        heart.innerHTML = '❤️';
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.fontSize = (16 + Math.random() * 20) + 'px';
+        heart.style.animationDuration = (6 + Math.random() * 5) + 's';
+        document.body.appendChild(heart);
+
+        setTimeout(() => {
+            heart.remove();
+        }, 10000);
+    }
+
+    setInterval(createHeart, 400);
+</script>
+
 </body>
 </html>
