@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Will You Be My Valentine?</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: url("https://source.unsplash.com/2N--x8dSkVQ/1600x900") no-repeat center center fixed;
+            background-size: cover;
+            text-align: center;
+            color: white;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: 3em;
+            text-shadow: 2px 2px 8px #000;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            font-size: 24px;
+            margin: 15px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        #yes-btn {
+            background: #ff5c8d;
+            color: white;
+        }
+
+        #no-btn {
+            position: absolute;
+            background: #ff3b3b;
+            color: white;
+        }
+
+        #yes-btn:hover {
+            transform: scale(1.1);
+        }
+
+    </style>
+</head>
+<body>
+    <h1>💖 Will You Be My Valentine? 💖</h1>
+    <button class="btn" id="yes-btn">Yes</button>
+    <button class="btn" id="no-btn">No</button>
+
+    <script>
+        const noBtn = document.getElementById('no-btn');
+        const yesBtn = document.getElementById('yes-btn');
+
+        noBtn.addEventListener('mouseover', () => {
+            const newX = Math.random() * (window.innerWidth - 120);
+            const newY = Math.random() * (window.innerHeight - 80);
+            noBtn.style.left = newX + 'px';
+            noBtn.style.top = newY + 'px';
+        });
+
+        yesBtn.addEventListener('click', () => {
+            document.body.innerHTML = '<h1>🎉 Yay! You said Yes! ❤️</h1>';
+        });
+    </script>
+</body>
+</html>
